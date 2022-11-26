@@ -10,7 +10,10 @@ const SinglePost: React.FC<{ post: any }> = (props) => {
   return (
     <div>
       <p>
-        <Link href={"/"}>GO HOME</Link>
+        <Link href={"/"}>GO Home</Link>
+      </p>
+      <p>
+        <Link href={"./"}>GO Back</Link>
       </p>
       <h1>{props.post.title}</h1>
       <p>{props.post.body}</p>
@@ -18,23 +21,26 @@ const SinglePost: React.FC<{ post: any }> = (props) => {
   );
 };
 export const getStaticPaths: GetStaticPaths = async () => {
+  const response: Response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts`
+  );
+  const data: Response[] = await response.json();
+  const paths = data.map((post: any) => {
+    return {
+      params: { postId: `${post.id}` },
+    };
+  });
   return {
-    paths: [
-      { params: { postId: "1" } },
-      { params: { postId: "2" } },
-      { params: { postId: "3" } },
-      { params: { postId: "4" } },
-    ],
+    paths,
     fallback: false,
   };
 };
 export const getStaticProps: GetStaticProps = async (context) => {
   const { postId } = context.params as IParams;
-  console.log(postId);
-  const response = await fetch(
+  const response: Response = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${postId}`
   );
-  const data = await response.json();
+  const data: Response[] = await response.json();
   return {
     props: {
       post: data,

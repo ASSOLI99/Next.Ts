@@ -8,9 +8,6 @@ const Posts: React.FC<{ posts: Response[] }> = (props) => {
       <h1>Posts</h1>
       <ul>
         {props.posts.map((post: any, i: number) => {
-          if (i >= 3) {
-            return;
-          }
           return (
             <li key={i}>
               <Link href={`posts/${post.id}`}> {post.title}</Link>
